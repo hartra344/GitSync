@@ -25,7 +25,7 @@ module.exports = class GitSync {
             log.debug(config);
 
             // Temporary fix until support of PRs
-            if ((config.issue.node_id && config.issue.node_id.startsWith("PR_")) ||
+            if ((config?.issue.node_id && config.issue.node_id.startsWith("PR_")) ||
                 (config.issue.nodeId && config.issue.nodeId.startsWith("PR_"))) {
                 // Log and skip PRs (comments)
                 log.info(`Action is performed on PR #${config.issue.number}. Skipping...`);
@@ -45,9 +45,9 @@ module.exports = class GitSync {
                 let configFile = fs.readFileSync(env.config_file);
                 configJSON = JSON.parse(configFile);    
 
-                console.log("JSON configuration file loaded.");  // skipcq JS-0002
+                log.debug("JSON configuration file loaded.");  // skipcq JS-0002
             } catch {
-                console.log("JSON configuration file not found."); // skipcq JS-0002
+                log.error("JSON configuration file not found."); // skipcq JS-0002
             };
         }   
 
