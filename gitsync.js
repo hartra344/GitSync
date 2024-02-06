@@ -889,7 +889,7 @@ module.exports = class GitSync {
             title !== issue.title ||
             body !== issue.body ||
             state !== issue.state ||
-            ghAssignedTo.toLowerCase() !== issue.assignee?.login?.toLowerCase()
+            ghAssignedTo?.toLowerCase() !== issue.assignee?.login?.toLowerCase()
           ) {
             let result = await octokit.rest.issues.update({
               owner,
