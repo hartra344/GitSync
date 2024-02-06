@@ -799,7 +799,7 @@ module.exports = class GitSync {
     });
   }
 
-  static objectFlip(obj) {
+  objectFlip(obj) {
     const ret = {};
     Object.keys(obj).forEach((key) => {
       ret[obj[key]] = key;
