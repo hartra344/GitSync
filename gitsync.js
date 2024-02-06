@@ -823,6 +823,7 @@ module.exports = class GitSync {
         "System.Description",
         "System.State",
         "System.ChangedDate",
+        "System.AssignedTo",
       ])
       .then(async (wiObj) => {
         let parsed = wiObj.fields["System.Title"].match(
