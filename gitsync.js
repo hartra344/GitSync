@@ -893,9 +893,11 @@ module.exports = class GitSync {
             state
           );
 
-          const ghAssignedTo = this.objectFlip(
-            config.ado.mappings?.handles ?? {}
-          )?.[assignedTo.toLowerCase()];
+          const ghAssignedTo = assignedTo
+            ? this.objectFlip(config.ado.mappings?.handles ?? {})?.[
+                assignedTo.toLowerCase()
+              ]
+            : null;
           if (
             title !== issue.title ||
             body !== issue.body ||
