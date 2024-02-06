@@ -829,6 +829,7 @@ module.exports = class GitSync {
         "System.Tags",
       ])
       .then(async (wiObj) => {
+        log.debug(`[WORKITEM: ${workItem.id}] WorkItem:`, wiObj);
         let issue_number = wiObj.fields["System.Tags"]
           .find((x) => x.includes("GitHub Issue #"))
           .split("#")[1];
