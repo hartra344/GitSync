@@ -770,7 +770,6 @@ module.exports = class GitSync {
         "AND [System.WorkItemType] = '" +
         config.ado.wit +
         "'" +
-        "AND [System.Tags] CONTAINS 'GitHub Issue #' " +
         "AND [System.Tags] CONTAINS 'GitHub Repo: " +
         config.GITHUB_REPOSITORY +
         "' " +
