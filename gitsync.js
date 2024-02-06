@@ -770,7 +770,7 @@ module.exports = class GitSync {
         "AND [System.WorkItemType] = '" +
         config.ado.wit +
         "'" +
-        "AND [System.Tags] CONTAINS 'GitHub Issue' " +
+        "AND [System.Tags] CONTAINS 'GitHub Issue #' " +
         "AND [System.Tags] CONTAINS 'GitHub Repo: " +
         config.GITHUB_REPOSITORY +
         "' " +
@@ -832,8 +832,8 @@ module.exports = class GitSync {
         log.debug(`[WORKITEM: ${workItem.id}] WorkItem:`, wiObj);
         let issue_number = wiObj.fields["System.Tags"]
           .split(";")
-          .find((x) => x.includes("GitHub Issue #"))
-          .split("#")[1];
+          ?.find((x) => x.includes("GitHub Issue #"))
+          ?.split("#")[1];
 
         log.debug(
           `[WORKITEM: ${workItem.id} / ISSUE: ${issue_number}] Issue Number:`,
