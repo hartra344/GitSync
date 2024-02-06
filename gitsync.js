@@ -834,6 +834,12 @@ module.exports = class GitSync {
           ?.find((x) => x.includes("GitHub Issue #"))
           ?.split("#")[1];
 
+        if (!issue_number) {
+          log.debug(
+            `[WORKITEM: ${workItem.id}] No issue number found. Skipping...`
+          );
+          return null;
+        }
         log.debug(
           `[WORKITEM: ${workItem.id} / ISSUE: ${issue_number}] Issue Number:`,
           issue_number
