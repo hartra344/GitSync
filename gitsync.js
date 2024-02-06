@@ -168,7 +168,7 @@ module.exports = class GitSync {
                 break;
         }
 
-        if (!!config.schedule) {
+        if (!!config.schedule || !!config.inputs?.manual_trigger) {
             await this.updateIssues(config);
         }
 
