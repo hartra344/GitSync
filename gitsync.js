@@ -898,6 +898,10 @@ module.exports = class GitSync {
                 assignedTo.toLowerCase()
               ]
             : null;
+          log.debug(
+            `[WORKITEM: ${workItem.id} / ISSUE: ${issue_number}] AssignedTo:`,
+            `${assignedTo}/${ghAssignedTo}`
+          );
           if (
             title !== issue.title ||
             body !== issue.body ||
