@@ -107,8 +107,6 @@ module.exports = class GitSync {
 
   createLabels(seed, labelsObj) {
     let labels = seed;
-
-    log.debug("Labels:", labelsObj);
     if (!labelsObj) return labels;
 
     labelsObj.forEach((label) => {
@@ -126,19 +124,12 @@ module.exports = class GitSync {
       !!config.ado.mappings &&
       !!config.ado.mappings.handles
     ) {
-      log.debug("Found mappings...");
-      log.debug(
-        `Searching for mapping for handle '${config.issue?.assignee?.login}'...`
-      );
       if (!!config.ado.mappings.handles[config.issue?.assignee?.login]) {
         assignee = config.ado.mappings.handles[config.issue?.assignee?.login];
       }
     }
 
     if (!!assignee) {
-      log.debug(
-        `Found mapping for handle '${config.issue?.assignee?.login}' as '${assignee}'...`
-      );
       return assignee;
     } else {
       if (!!config.assignee) {
@@ -148,7 +139,6 @@ module.exports = class GitSync {
       }
 
       if (useDefault && !!config.ado.assignedTo) {
-        log.debug(`Using default assignment of '${config.ado.assignedTo}'...`);
         return config.ado.assignedTo;
       }
     }
@@ -205,7 +195,6 @@ module.exports = class GitSync {
     }
 
     log.info("Searching for work item...");
-    log.debug("AzDO Url:", config.ado.orgUrl);
 
     let conn = this.getConnection(config);
     let client = null;
@@ -234,11 +223,8 @@ module.exports = class GitSync {
         "'",
     };
 
-    log.debug("WIQL Query:", wiql);
-
     try {
       result = await client.queryByWiql(wiql, context);
-      log.debug("Query results:", result);
 
       if (result === null) {
         log.error("Error: project name appears to be invalid.");
@@ -258,8 +244,6 @@ module.exports = class GitSync {
     } else {
       workItem = result.workItems.length > 0 ? result.workItems[0] : null;
     }
-
-    log.debug("Work item:", workItem);
 
     if (workItem !== null) {
       log.info("Work item found:", workItem.id);
@@ -378,8 +362,6 @@ module.exports = class GitSync {
         });
       }
 
-      log.debug("Patch document:", patchDoc);
-
       let conn = this.getConnection(config);
       let client = await conn.getWorkItemTrackingApi();
       let result = null;
@@ -400,8 +382,6 @@ module.exports = class GitSync {
           core.setFailed();
           return -1;
         }
-
-        log.debug(result);
         log.info("Successfully created work item:", result.id);
 
         return result;
@@ -732,7 +712,6 @@ module.exports = class GitSync {
           config.ado.bypassRules
         );
 
-        log.debug(result);
         log.info("Successfully updated work item:", result.id);
 
         return result;
@@ -747,7 +726,6 @@ module.exports = class GitSync {
 
   async updateIssues(config) {
     log.info("Updating issues...");
-    log.debug("AzDO Url:", config.ado.orgUrl);
 
     let conn = this.getConnection(config);
     let client = null;
@@ -776,11 +754,8 @@ module.exports = class GitSync {
         "AND [System.ChangedDate] > @Today - 1",
     };
 
-    log.debug("WIQL Query:", wiql);
-
     try {
       result = await client.queryByWiql(wiql, context);
-      log.debug("Query results:", result);
 
       if (result === null) {
         log.error("Error: project name appears to be invalid.");
@@ -828,7 +803,6 @@ module.exports = class GitSync {
         "System.Tags",
       ])
       .then(async (wiObj) => {
-        log.debug(`[WORKITEM: ${workItem.id}] WorkItem:`, wiObj);
         let issue_number = wiObj.fields["System.Tags"]
           .split(";")
           ?.find((x) => x.includes("GitHub Issue #"))
