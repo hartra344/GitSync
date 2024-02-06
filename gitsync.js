@@ -340,7 +340,7 @@ module.exports = class GitSync {
       ];
 
       // set assigned to
-      if (!!config.ado.assignedTo || config.assignee.login) {
+      if (!!config.ado.assignedTo || config.issue?.assignee?.login) {
         patchDoc.push({
           op: "add",
           path: "/fields/System.AssignedTo",
