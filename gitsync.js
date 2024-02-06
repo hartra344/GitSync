@@ -122,28 +122,28 @@ module.exports = class GitSync {
     let assignee = null;
 
     if (
-      !!config.assignee &&
+      !!config?.issue?.assignee &&
       !!config.ado.mappings &&
       !!config.ado.mappings.handles
     ) {
       log.debug("Found mappings...");
       log.debug(
-        `Searching for mapping for handle '${config.assignees?.[0]?.login}'...`
+        `Searching for mapping for handle '${config.issue?.assignee?.login}'...`
       );
-      if (!!config.ado.mappings.handles[config.assignees?.[0]?.login]) {
-        assignee = config.ado.mappings.handles[config.assignees?.[0]?.login];
+      if (!!config.ado.mappings.handles[config.issue?.assignee?.login]) {
+        assignee = config.ado.mappings.handles[config.issue?.assignee?.login];
       }
     }
 
     if (!!assignee) {
       log.debug(
-        `Found mapping for handle '${config.assignees?.[0]?.login}' as '${assignee}'...`
+        `Found mapping for handle '${config.issue?.assignee?.login}' as '${assignee}'...`
       );
       return assignee;
     } else {
       if (!!config.assignee) {
         log.debug(
-          `No mapping found for handle '${config.assignees?.[0]?.login}'...`
+          `No mapping found for handle '${config.issue?.assignee?.login}'...`
         );
       }
 
@@ -342,7 +342,8 @@ module.exports = class GitSync {
       ];
 
       // set assigned to
-      if (!!config.ado.assignedTo || config.issue?.assignee?.login) {
+      const assignee = this.getAssignee(config, true);
+      if (assignee) {
         patchDoc.push({
           op: "add",
           path: "/fields/System.AssignedTo",
@@ -633,7 +634,7 @@ module.exports = class GitSync {
       )}" target="_new">${config.issue.title}</a> in <a href="${this.cleanUrl(
         config.issue.repository_url
       )}" target="_blank">${config.repository.full_name}</a> assigned to '${
-        config.assignees?.[0]?.login
+        config.issue?.assignee?.login
       }' by <a href="${config.issue.user.html_url}" target="_blank">${
         config.issue.user.login
       }</a>`,
@@ -660,7 +661,7 @@ module.exports = class GitSync {
         )}" target="_blank">${
           config.repository.full_name
         }</a> removal of assignment to '${
-          config.assignees?.[0]?.login
+          config.issue?.assignee?.login
         }' by <a href="${config.issue.user.html_url}" target="_blank">${
           config.issue.user.login
         }</a>`,
