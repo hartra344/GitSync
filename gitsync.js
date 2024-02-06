@@ -853,7 +853,7 @@ module.exports = class GitSync {
           );
           let title = wiObj.fields["System.Title"];
           let body = converter
-            .makeMarkdown(wiObj.fields["System.Description"])
+            .makeMarkdown(wiObj.fields["System.Description"] ?? "")
             .replace(/<br>/g, "")
             .trim();
           let assignedTo = wiObj.fields["System.AssignedTo"]?.uniqueName;
