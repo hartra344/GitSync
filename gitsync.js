@@ -128,21 +128,23 @@ module.exports = class GitSync {
     ) {
       log.debug("Found mappings...");
       log.debug(
-        `Searching for mapping for handle '${config.assignee.login}'...`
+        `Searching for mapping for handle '${config.assignees?.[0]?.login}'...`
       );
-      if (!!config.ado.mappings.handles[config.assignee.login]) {
-        assignee = config.ado.mappings.handles[config.assignee.login];
+      if (!!config.ado.mappings.handles[config.assignees?.[0]?.login]) {
+        assignee = config.ado.mappings.handles[config.assignees?.[0]?.login];
       }
     }
 
     if (!!assignee) {
       log.debug(
-        `Found mapping for handle '${config.assignee.login}' as '${assignee}'...`
+        `Found mapping for handle '${config.assignees?.[0]?.login}' as '${assignee}'...`
       );
       return assignee;
     } else {
       if (!!config.assignee) {
-        log.debug(`No mapping found for handle '${config.assignee.login}'...`);
+        log.debug(
+          `No mapping found for handle '${config.assignees?.[0]?.login}'...`
+        );
       }
 
       if (useDefault && !!config.ado.assignedTo) {
@@ -631,7 +633,7 @@ module.exports = class GitSync {
       )}" target="_new">${config.issue.title}</a> in <a href="${this.cleanUrl(
         config.issue.repository_url
       )}" target="_blank">${config.repository.full_name}</a> assigned to '${
-        config.assignee.login
+        config.assignees?.[0]?.login
       }' by <a href="${config.issue.user.html_url}" target="_blank">${
         config.issue.user.login
       }</a>`,
@@ -657,9 +659,11 @@ module.exports = class GitSync {
           config.issue.repository_url
         )}" target="_blank">${
           config.repository.full_name
-        }</a> removal of assignment to '${config.assignee.login}' by <a href="${
-          config.issue.user.html_url
-        }" target="_blank">${config.issue.user.login}</a>`,
+        }</a> removal of assignment to '${
+          config.assignees?.[0]?.login
+        }' by <a href="${config.issue.user.html_url}" target="_blank">${
+          config.issue.user.login
+        }</a>`,
       },
     ];
 
@@ -827,7 +831,7 @@ module.exports = class GitSync {
         let issue_number = wiObj.fields["System.Tags"]
           .first((x) => x.includes("GitHub Issue #"))
           .split("#")[1];
-        
+
         log.debug(
           `[WORKITEM: ${workItem.id} / ISSUE: ${issue_number}] Issue Number:`,
           issue_number
