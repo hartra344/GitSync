@@ -877,7 +877,7 @@ module.exports = class GitSync {
               issue.updated_at
             )}). Updating issue...`
           );
-          let title = parsed.groups.title;
+          let title = wiObj.fields["System.Title"];
           let body = converter
             .makeMarkdown(wiObj.fields["System.Description"])
             .replace(/<br>/g, "")
