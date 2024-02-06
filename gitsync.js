@@ -226,10 +226,7 @@ module.exports = class GitSync {
         "AND [System.WorkItemType] = '" +
         config.ado.wit +
         "'" +
-        "AND [System.Title] CONTAINS 'GH #" +
-        config.issue.number +
-        ":' " +
-        "AND [System.Tags] CONTAINS 'GitHub Issue' " +
+        `AND [System.Tags] CONTAINS 'GitHub Issue #${config.issue.number}' ` +
         "AND [System.Tags] CONTAINS 'GitHub Repo: " +
         config.repository.full_name +
         "'",
@@ -299,7 +296,7 @@ module.exports = class GitSync {
         {
           op: "add",
           path: "/fields/System.Title",
-          value: `GH #${config.issue.number}: ${config.issue.title}`,
+          value: config.issue.title,
         },
         {
           op: "add",
@@ -315,7 +312,7 @@ module.exports = class GitSync {
           op: "add",
           path: "/fields/System.Tags",
           value: this.createLabels(
-            `GitHub Issue;GitHub Repo: ${config.repository.full_name};`,
+            `GitHub Issue #${config.issue.number};GitHub Repo: ${config.repository.full_name};`,
             config.issue.labels
           ),
         },
@@ -510,7 +507,7 @@ module.exports = class GitSync {
       {
         op: "replace",
         path: "/fields/System.Title",
-        value: `GH #${config.issue.number}: ${config.issue.title}`,
+        value: config.issue.title,
       },
       {
         op: "replace",
@@ -824,13 +821,13 @@ module.exports = class GitSync {
         "System.State",
         "System.ChangedDate",
         "System.AssignedTo",
+        "System.Tags",
       ])
       .then(async (wiObj) => {
-        let parsed = wiObj.fields["System.Title"].match(
-          /^GH\s#(?<number>\d+):\s(?<title>.*)/
-        );
-
-        let issue_number = parsed.groups.number;
+        let issue_number = wiObj.fields["System.Tags"]
+          .first((x) => x.includes("GitHub Issue #"))
+          .split("#")[1];
+        
         log.debug(
           `[WORKITEM: ${workItem.id} / ISSUE: ${issue_number}] Issue Number:`,
           issue_number
