@@ -830,7 +830,7 @@ module.exports = class GitSync {
       ])
       .then(async (wiObj) => {
         let issue_number = wiObj.fields["System.Tags"]
-          .first((x) => x.includes("GitHub Issue #"))
+          .find((x) => x.includes("GitHub Issue #"))
           .split("#")[1];
 
         log.debug(
