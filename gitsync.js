@@ -874,7 +874,7 @@ module.exports = class GitSync {
             .replace(/<br>/g, "")
             .trim();
           let assignedTo = wiObj.fields["System.AssignedTo"]?.uniqueName;
-          log.debug(wiObj.fields);
+
           let states = config.ado.states;
           let state = Object.keys(states).find(
             (k) => states[k] === wiObj.fields["System.State"]
