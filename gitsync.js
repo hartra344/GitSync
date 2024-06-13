@@ -439,6 +439,11 @@ module.exports = class GitSync {
       },
       {
         op: "add",
+        path: "/fields/IntuneAgile.ResolutionReason",
+        value: "Won't Fix"
+      },
+      {
+        op: "add",
         path: "/fields/System.History",
         value: `GitHub issue #${config.issue.number}: <a href="${this.cleanUrl(
           config.issue.url
