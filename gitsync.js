@@ -148,7 +148,10 @@ module.exports = class GitSync {
 
   async performWork(config) {
     let workItem = null;
-    console.log(JSON.stringify(config.issue?.labels, null, 2));
+    if(config.issue?.labels?.some(x => x.name?.toLowerCase() === "noado")) {
+      workItem = await this.deleteWorkItem(config);
+      return workItem;
+    }
     switch (config.action) {
       case "opened":
         workItem = await this.createWorkItem(config);
@@ -841,7 +844,8 @@ module.exports = class GitSync {
         // Can later add check to see if last entry in history of WorkItem was indeed updated by GitHub
         if (
           new Date(wiObj.fields["System.ChangedDate"]) >
-          new Date(issue.updated_at)
+          new Date(issue.updated_at) &&
+          !issue.labels?.some(x => x.name?.toLowerCase() === "noado")
         ) {
           log.debug(
             `[WORKITEM: ${
