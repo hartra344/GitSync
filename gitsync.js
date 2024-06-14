@@ -299,6 +299,14 @@ module.exports = class GitSync {
           value: !!html ? html : "",
         },
         {
+          "op": "add",
+          "path": "/relations/-",
+          "value": {
+              "rel": "System.LinkTypes.Hierarchy-Reverse",//Add a parent link
+              "url": "https://dev.azure.com/msazure/one/_apis/wit/workItems/24493735"
+          }
+        },
+        {
           op: "add",
           path: "/fields/System.Tags",
           value: this.createLabels(
